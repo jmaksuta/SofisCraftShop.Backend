@@ -88,7 +88,7 @@ namespace SofisCraftShop.Backend.Services
                 if (invItem.Quantity <= 0) _db.PlayerInventoryItems.Remove(invItem);
             }
 
-            var queueItem = new ActiveCraftQueueItem
+            var queueItem = new ActiveCraftQueueItem()
             {
                 PlayerId = playerId,
                 RecipeId = recipeId,
@@ -117,8 +117,7 @@ namespace SofisCraftShop.Backend.Services
                 .FirstOrDefaultAsync(p => p.Id == playerId)
                 ?? throw new KeyNotFoundException("Player not found.");
 
-            var queueItem = player.CraftQueue.FirstOrDefault(q => q.Id == queueItemId)
-                ?? throw new KeyNotFoundException("Craft task not found in active queue.");
+            var queueItem = player.CraftQueue.FirstOrDefault(q => q.Id == queueItemId) ?? throw new KeyNotFoundException("Craft task not found in active queue.");
 
             // 4. Server-Side Timer Validation
             if (DateTime.UtcNow < queueItem.CompletesAt)
