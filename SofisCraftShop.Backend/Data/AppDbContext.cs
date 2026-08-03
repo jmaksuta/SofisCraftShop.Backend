@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SofisCraftShop.Backend.Data.Entities;
 
 namespace SofisCraftShop.Backend.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -15,9 +17,14 @@ namespace SofisCraftShop.Backend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Ensure unique items per player
+            // Configure custom entity constraints
             modelBuilder.Entity<PlayerInventoryItem>()
                 .HasIndex(i => new { i.PlayerId, i.ItemId })
+                .IsUnique();
+
+            // Link Player record to IdentityUser via 1-to-1 or explicit Foreign Key
+            modelBuilder.Entity<Player>()
+                .HasIndex(p => p.Username)
                 .IsUnique();
         }
     }

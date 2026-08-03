@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36327.8 d17.14
+VisualStudioVersion = 17.14.36327.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SofisCraftShop.Backend", "SofisCraftShop.Backend\SofisCraftShop.Backend.csproj", "{124667E1-B7DB-4387-BA21-2211C657AF5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sofi's Craft Shop Web App", "Sofi's Craft Shop Web App\Sofi's Craft Shop Web App.csproj", "{6D825817-04AE-4BC7-A6C6-2D224B194348}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{124667E1-B7DB-4387-BA21-2211C657AF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{124667E1-B7DB-4387-BA21-2211C657AF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{124667E1-B7DB-4387-BA21-2211C657AF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D825817-04AE-4BC7-A6C6-2D224B194348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D825817-04AE-4BC7-A6C6-2D224B194348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D825817-04AE-4BC7-A6C6-2D224B194348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D825817-04AE-4BC7-A6C6-2D224B194348}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
