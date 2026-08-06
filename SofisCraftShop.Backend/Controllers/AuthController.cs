@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SofisCraftShop.Backend.Data;
 using SofisCraftShop.Backend.Data.Entities;
 using SofisCraftShop.Backend.Services;
 using System;
+using System.Numerics;
 using System.Threading.Tasks;
 using static SofisCraftShop.Backend.DTOs.AuthDTOs;
 
@@ -53,6 +55,9 @@ namespace SofisCraftShop.Backend.Controllers
 
             // Automatically sign in / issue token after registration
             string token = _tokenService.GenerateJwtToken(Guid.Parse(user.Id), user.UserName);
+
+            CreatePlayerIfNotExists(user.UserName);
+
             return Ok(new AuthResponse(token, user.Id, user.UserName, user.Email ?? ""));
         }
 
@@ -68,23 +73,39 @@ namespace SofisCraftShop.Backend.Controllers
                 return Unauthorized(new { message = "Invalid username or password." });
 
             string token = _tokenService.GenerateJwtToken(Guid.Parse(user.Id), user.UserName!);
+
+            CreatePlayerIfNotExists(request.Username);
+            
             return Ok(new AuthResponse(token, user.Id, user.UserName!, user.Email ?? ""));
+        }
 
-            //if (string.IsNullOrWhiteSpace(request.Username))
-            //    return BadRequest("Username is required.");
+        private async void CreatePlayerIfNotExists(string Username)
+        {
+            // Find or create player
+            var player = await _db.Players.FirstOrDefaultAsync(p => p.Username == Username);
+            if (player == null)
+            {
+                player = new Player
+                {
+                    Username = Username
+                };
+                _db.Players.Add(player);
+                await _db.SaveChangesAsync();
 
-            //// Find or create player
-            //var player = await _db.Players.FirstOrDefaultAsync(p => p.Username == request.Username);
-            //if (player == null)
-            //{
-            //    player = new Player { Username = request.Username };
-            //    _db.Players.Add(player);
-            //    await _db.SaveChangesAsync();
-            //}
+                SeedNewPlayerInventory(player);
+                await _db.SaveChangesAsync();
+            }
 
-            //string token = _tokenService.GenerateJwtToken(player.Id, player.Username);
+        }
 
-            //return Ok(new AuthResponse(token, player.Id, player.Username));
+        private void SeedNewPlayerInventory(Player player)
+        {
+            var starterItems = new List<PlayerInventoryItem>
+            {
+                new PlayerInventoryItem { PlayerId = player.Id, ItemId = "wood_log", Quantity = 10 },
+                new PlayerInventoryItem { PlayerId = player.Id, ItemId = "copper_ore", Quantity = 5 }
+            };
+            _db.PlayerInventoryItems.AddRange(starterItems);
         }
     }
 }

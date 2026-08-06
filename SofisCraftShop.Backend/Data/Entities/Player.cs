@@ -22,5 +22,7 @@ namespace SofisCraftShop.Backend.Data.Entities
         // Navigation Properties
         public ICollection<PlayerInventoryItem> Inventory { get; set; } = new List<PlayerInventoryItem>();
         public ICollection<ActiveCraftQueueItem> CraftQueue { get; set; } = new List<ActiveCraftQueueItem>();
+
+        public ICollection<CustomerOrder> CustomerOrders { get; set; } = new List<CustomerOrder>();
     }
 }
